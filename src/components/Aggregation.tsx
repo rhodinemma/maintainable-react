@@ -1,5 +1,5 @@
 import { Category } from "./Category";
-import { AggregationType } from "./types";
+import { AggregationType } from "../types";
 
 export const Aggregation = ({
   aggregation,

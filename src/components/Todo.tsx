@@ -1,7 +1,7 @@
 import { TodoList } from "./TodoList";
 import { TodoInput } from "./TodoInput";
-import { useTodos } from "./useTodos";
-import { TodoType } from "./types";
+import { useTodos } from "../hooks/useTodos";
+import { TodoType } from "../types";
 import { Aggregation } from "./Aggregation";
 import { SearchInput } from "./SearchInput";
 import "./Todo.css";

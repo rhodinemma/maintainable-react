@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { v4 as uuid } from "uuid";
-import { TodoType } from "./types";
+import { TodoType } from "../types";
 
 const TodoInput = ({
   onItemAdded,

@@ -12,7 +12,7 @@ const TodoList = ({
     return (
         <>
             {todos.map((todo) => (
-                <div className="todo-item" key={todo.id}>
+                <div className="todo-item" key={todo.id} data-testid="todo-item">
                     <span
                         data-completed={todo.completed}
                         onClick={() => onToggleItem(todo)}

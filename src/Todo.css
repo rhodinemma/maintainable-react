@@ -1,0 +1,25 @@
+.todo-container {
+    width: 600px;
+    margin-inline: auto;
+}
+
+.todo-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.todo-item {
+    background-color: #efefef;
+    border: 1px solid #efefef;
+    border-radius: 0.5rem;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.todo-item[data-completed="true"] {
+    text-decoration: line-through;
+    color: #999;
+}

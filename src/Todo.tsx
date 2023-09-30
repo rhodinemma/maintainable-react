@@ -1,44 +1,9 @@
 import { useState } from "react";
-import { v4 as uuid } from "uuid";
+import { TodoType } from "./types";
+import { TodoList } from "./TodoList";
+import { TodoInput } from "./TodoInput";
 
-type TodoType = {
-    id: string;
-    content: string;
-};
-
-const TodoList = ({ todos }: { todos: TodoType[] }) => {
-    return (
-        <>
-            {todos.map((todo) => (
-                <div key={todo.id}>{todo.content}</div>
-            ))}
-        </>
-    )
-}
-
-const TodoInput = ({ onItemAdded }: { onItemAdded: (todo: TodoType) => void }) => {
-    const [content, setContent] = useState<string>("");
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setContent(e.target.value);
-    };
-
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter") {
-            const id = uuid();
-            onItemAdded({ id, content });
-        }
-    };
-
-    return (
-        <input
-            type="text"
-            data-testid="todo-input"
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-        />
-    )
-}
+import "./Todo.css"
 
 const Todo = () => {
     const [todos, setTodos] = useState<TodoType[]>([]);
@@ -47,11 +12,20 @@ const Todo = () => {
         setTodos([todo, ...todos]);
     }
 
+    const onToggleItem = (todo: TodoType) => {
+        setTodos(todos.map(item => {
+            if (item.id === todo.id) {
+                return ({ ...item, completed: !item.completed })
+            }
+            return item
+        }))
+    }
+
     return (
-        <div>
+        <div className="todo-container">
             <h2>todos</h2>
             <TodoInput onItemAdded={onItemAdded} />
-            <TodoList todos={todos} />
+            <TodoList todos={todos} onToggleItem={onToggleItem} />
         </div>
     );
 };

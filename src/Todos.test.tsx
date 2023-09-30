@@ -22,4 +22,23 @@ describe('Todos application', () => {
 
         expect(screen.getByText("buy some milk")).toBeInTheDocument();
     })
+
+    it('completes an item when clicked', () => {
+        render(<Todo />);
+
+        const input = screen.getByTestId('todo-input');
+
+        act(() => {
+            userEvent.type(input, 'buy some milk');
+            userEvent.type(input, '{enter}');
+        });
+
+        const item = screen.getByText("buy some milk");
+
+        act(() => {
+            userEvent.click(item)
+        })
+
+        expect(item).toHaveAttribute('data-completed', "true")
+    })
 })

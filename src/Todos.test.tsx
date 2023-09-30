@@ -75,98 +75,114 @@ describe("Todos application", () => {
     expect(screen.getByText("buy some milk")).toBeInTheDocument();
   });
 
-  it("renders different groups of items", () => {
+  describe("Aggregation", () => {
     const items = [
       { id: "1", content: "buy some milk", completed: false },
       { id: "2", content: "buy some bread", completed: true },
       { id: "3", content: "buy some eggs", completed: false },
     ];
 
-    render(<Todo items={items} />);
+    it("renders different groups of items", () => {
+      render(<Todo items={items} />);
 
-    const todoItems = screen.getAllByTestId("todo-item");
-    expect(todoItems.length).toEqual(items.length);
+      const todoItems = screen.getAllByTestId("todo-item");
+      expect(todoItems.length).toEqual(items.length);
 
-    const completedTab = screen.getByTestId("todo-completed");
-    act(() => {
-      userEvent.click(completedTab);
+      const completedTab = screen.getByTestId("todo-completed");
+      act(() => {
+        userEvent.click(completedTab);
+      });
+
+      expect(screen.getAllByTestId("todo-item").length).toEqual(1);
+      expect(screen.getByText("buy some bread")).toBeInTheDocument();
     });
 
-    expect(screen.getAllByTestId("todo-item").length).toEqual(1);
-    expect(screen.getByText("buy some bread")).toBeInTheDocument();
+    it("switch tabs", () => {
+      render(<Todo items={items} />);
+
+      const todoItems = screen.getAllByTestId("todo-item");
+      expect(todoItems.length).toEqual(items.length);
+
+      const totalTab = screen.getByTestId("todo-total");
+      act(() => {
+        userEvent.click(totalTab);
+      });
+
+      expect(screen.getAllByTestId("todo-item").length).toEqual(3);
+    });
+
+    it("renders active groups of items", () => {
+      const items = [
+        { id: "1", content: "buy some milk", completed: false },
+        { id: "2", content: "buy some bread", completed: true },
+        { id: "3", content: "buy some eggs", completed: false },
+      ];
+
+      render(<Todo items={items} />);
+
+      const todoItems = screen.getAllByTestId("todo-item");
+      expect(todoItems.length).toEqual(items.length);
+
+      const activeTab = screen.getByTestId("todo-active");
+      act(() => {
+        userEvent.click(activeTab);
+      });
+
+      expect(screen.getAllByTestId("todo-item").length).toEqual(2);
+      expect(screen.getByText("buy some eggs")).toBeInTheDocument();
+    });
+
+    it("show summary information", () => {
+      const items = [
+        { id: "1", content: "buy some milk", completed: false },
+        { id: "2", content: "buy some bread", completed: true },
+        { id: "3", content: "buy some eggs", completed: false },
+      ];
+
+      render(<Todo items={items} />);
+
+      const todoItems = screen.getAllByTestId("todo-item");
+      expect(todoItems.length).toEqual(items.length);
+
+      const totalTab = screen.getByTestId("todo-total");
+      act(() => {
+        userEvent.click(totalTab);
+      });
+
+      const activeTab = screen.getByTestId("todo-active");
+      act(() => {
+        userEvent.click(activeTab);
+      });
+
+      const completedTab = screen.getByTestId("todo-completed");
+      act(() => {
+        userEvent.click(completedTab);
+      });
+
+      expect(screen.getAllByTestId("todo-item").length).toEqual(1);
+      expect(within(totalTab).getByText("3")).toBeInTheDocument();
+      expect(within(activeTab).getByText("2")).toBeInTheDocument();
+      expect(within(completedTab).getByText("1")).toBeInTheDocument();
+    });
   });
 
-  it("switch tabs", () => {
-    const items = [
-      { id: "1", content: "buy some milk", completed: false },
-      { id: "2", content: "buy some bread", completed: true },
-      { id: "3", content: "buy some eggs", completed: false },
-    ];
+  describe("Search", () => {
+    it("search by keyword", () => {
+      const items = [
+        { id: "1", content: "get some milk", completed: false },
+        { id: "2", content: "buy some bread", completed: true },
+        { id: "3", content: "buy some eggs", completed: false },
+      ];
 
-    render(<Todo items={items} />);
+      render(<Todo items={items} />);
 
-    const todoItems = screen.getAllByTestId("todo-item");
-    expect(todoItems.length).toEqual(items.length);
+      const input = screen.getByTestId("search-input");
 
-    const totalTab = screen.getByTestId("todo-total");
-    act(() => {
-      userEvent.click(totalTab);
+      act(() => {
+        userEvent.type(input, "buy");
+      });
+
+      expect(screen.getAllByTestId("todo-item").length).toEqual(2);
     });
-
-    expect(screen.getAllByTestId("todo-item").length).toEqual(3);
-  });
-
-  it("renders active groups of items", () => {
-    const items = [
-      { id: "1", content: "buy some milk", completed: false },
-      { id: "2", content: "buy some bread", completed: true },
-      { id: "3", content: "buy some eggs", completed: false },
-    ];
-
-    render(<Todo items={items} />);
-
-    const todoItems = screen.getAllByTestId("todo-item");
-    expect(todoItems.length).toEqual(items.length);
-
-    const activeTab = screen.getByTestId("todo-active");
-    act(() => {
-      userEvent.click(activeTab);
-    });
-
-    expect(screen.getAllByTestId("todo-item").length).toEqual(2);
-    expect(screen.getByText("buy some eggs")).toBeInTheDocument();
-  });
-
-  it("show summary information", () => {
-    const items = [
-      { id: "1", content: "buy some milk", completed: false },
-      { id: "2", content: "buy some bread", completed: true },
-      { id: "3", content: "buy some eggs", completed: false },
-    ];
-
-    render(<Todo items={items} />);
-
-    const todoItems = screen.getAllByTestId("todo-item");
-    expect(todoItems.length).toEqual(items.length);
-
-    const totalTab = screen.getByTestId("todo-total");
-    act(() => {
-      userEvent.click(totalTab);
-    });
-
-    const activeTab = screen.getByTestId("todo-active");
-    act(() => {
-      userEvent.click(activeTab);
-    });
-
-    const completedTab = screen.getByTestId("todo-completed");
-    act(() => {
-      userEvent.click(completedTab);
-    });
-
-    expect(screen.getAllByTestId("todo-item").length).toEqual(1);
-    expect(within(totalTab).getByText("3")).toBeInTheDocument();
-    expect(within(activeTab).getByText("2")).toBeInTheDocument();
-    expect(within(completedTab).getByText("1")).toBeInTheDocument();
   });
 });

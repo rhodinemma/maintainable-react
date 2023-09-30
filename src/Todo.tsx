@@ -3,6 +3,7 @@ import { TodoInput } from "./TodoInput";
 import { useTodos } from "./useTodos";
 import { TodoType } from "./types";
 import { Aggregation } from "./Aggregation";
+import { SearchBox } from "./SearchBox";
 import "./Todo.css";
 
 const Todo = ({ items = [] }: { items?: TodoType[] }) => {
@@ -13,7 +14,9 @@ const Todo = ({ items = [] }: { items?: TodoType[] }) => {
     addTodo,
     toggleTodo,
     deleteTodo,
+    search,
   } = useTodos(items);
+
   return (
     <div className="todo-container">
       <h2>todos</h2>
@@ -24,6 +27,7 @@ const Todo = ({ items = [] }: { items?: TodoType[] }) => {
         onToggleItem={toggleTodo}
         onDeleteItem={deleteTodo}
       />
+      <SearchBox performSearch={search} />
     </div>
   );
 };

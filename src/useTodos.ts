@@ -4,27 +4,41 @@ import { TodoType } from "./types";
 export const useTodos = (items: TodoType[]) => {
     const [todos, setTodos] = useState<TodoType[]>(items);
     const [category, switchCategory] = useState<String>('total');
+    const [query, setQuery] = useState<String>('')
+
+    const completed = useMemo(() => {
+        return todos.filter(todo => todo.completed)
+    }, [todos])
+
+    const active = useMemo(() => {
+        return todos.filter(todo => !todo.completed)
+    }, [todos])
 
     const displayTodos = useMemo(() => {
-        switch (category) {
-            case 'total':
-                return todos;
-            case 'completed':
-                return todos.filter(todo => todo.completed);
-            case 'active':
-                return todos.filter(todo => !todo.completed);
-            default:
-                return todos;
+        function getDisplayTodos() {
+            switch (category) {
+                case 'total':
+                    return todos;
+                case 'completed':
+                    return completed;
+                case 'active':
+                    return active;
+                default:
+                    return todos;
+            }
         }
-    }, [category, todos])
+
+        const items = getDisplayTodos();
+        return items.filter(item => item.content.includes(query.toString()))
+    }, [active, category, completed, query, todos])
 
     const aggregation = useMemo(() => {
         return {
             total: todos.length,
-            completed: todos.filter(todo => todo.completed).length,
-            active: todos.filter(todo => !todo.completed).length
+            completed: completed.length,
+            active: active.length
         }
-    }, [todos])
+    }, [active.length, completed.length, todos.length])
 
     const addTodo = (todo: TodoType) => {
         setTodos([todo, ...todos]);
@@ -43,5 +57,9 @@ export const useTodos = (items: TodoType[]) => {
         setTodos(todos.filter(item => item.id !== todo.id))
     }
 
-    return { displayTodos, aggregation, switchCategory, addTodo, toggleTodo, deleteTodo }
+    const search = (query: string) => {
+        setQuery(query);
+    }
+
+    return { displayTodos, aggregation, switchCategory, addTodo, toggleTodo, deleteTodo, search }
 }

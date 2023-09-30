@@ -41,4 +41,26 @@ describe('Todos application', () => {
 
         expect(item).toHaveAttribute('data-completed', "true")
     })
+
+    it('deletes an item when button is clicked', () => {
+        render(<Todo />);
+
+        const input = screen.getByTestId('todo-input');
+
+        act(() => {
+            userEvent.type(input, 'buy some milk');
+            userEvent.type(input, '{enter}');
+        });
+
+        const item = screen.getByText("buy some milk");
+        expect(item).toBeInTheDocument();
+
+        const deleteButton = screen.getByTestId('delete-button');
+
+        act(() => {
+            userEvent.click(deleteButton)
+        })
+
+        expect(item).not.toBeInTheDocument()
+    })
 })

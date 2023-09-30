@@ -1,13 +1,34 @@
-import { TodoType } from "./types"
+import { TodoType } from "./types";
 
-const TodoList = ({ todos, onToggleItem }: { todos: TodoType[], onToggleItem: (todo: TodoType) => void }) => {
+const TodoList = ({
+    todos,
+    onToggleItem,
+    onDeleteItem,
+}: {
+    todos: TodoType[];
+    onToggleItem: (todo: TodoType) => void;
+    onDeleteItem: (todo: TodoType) => void;
+}) => {
     return (
         <>
             {todos.map((todo) => (
-                <div className="todo-item" key={todo.id} data-completed={todo.completed} onClick={() => onToggleItem(todo)}>{todo.content}</div>
+                <div className="todo-item" key={todo.id}>
+                    <span
+                        data-completed={todo.completed}
+                        onClick={() => onToggleItem(todo)}
+                    >
+                        {todo.content}
+                    </span>
+                    <button
+                        data-testid="delete-button"
+                        onClick={() => onDeleteItem(todo)}
+                    >
+                        Delete
+                    </button>
+                </div>
             ))}
         </>
-    )
-}
+    );
+};
 
-export { TodoList }
+export { TodoList };

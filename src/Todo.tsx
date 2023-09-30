@@ -3,7 +3,7 @@ import { TodoInput } from "./TodoInput";
 import { useTodos } from "./useTodos";
 import { TodoType } from "./types";
 import { Aggregation } from "./Aggregation";
-import { SearchBox } from "./SearchBox";
+import { SearchInput } from "./SearchInput";
 import "./Todo.css";
 
 const Todo = ({ items = [] }: { items?: TodoType[] }) => {
@@ -19,7 +19,7 @@ const Todo = ({ items = [] }: { items?: TodoType[] }) => {
 
   return (
     <div className="todo-container">
-      <h2>todos</h2>
+      <h1>todos</h1>
       <TodoInput onItemAdded={addTodo} />
       <Aggregation aggregation={aggregation} switchCategory={switchCategory} />
       <TodoList
@@ -27,7 +27,7 @@ const Todo = ({ items = [] }: { items?: TodoType[] }) => {
         onToggleItem={toggleTodo}
         onDeleteItem={deleteTodo}
       />
-      <SearchBox performSearch={search} />
+      <SearchInput performSearch={search} />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 
-export const SearchBox = ({
+export const SearchInput = ({
   performSearch,
 }: {
   performSearch: (query: string) => void;
@@ -15,6 +15,7 @@ export const SearchBox = ({
       type="text"
       data-testid="search-input"
       onChange={handleSearch}
+      placeholder="Type to search...."
     />
   );
 };

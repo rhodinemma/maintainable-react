@@ -3,3 +3,9 @@ export type TodoType = {
     content: string;
     completed: boolean;
 };
+
+export type AggregationType = {
+    total: number;
+    completed: number;
+    active: number;
+};

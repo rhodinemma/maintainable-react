@@ -3,7 +3,7 @@ import { TodoType } from "./types";
 
 export const useTodos = (items: TodoType[]) => {
     const [todos, setTodos] = useState<TodoType[]>(items);
-    const [category, setCategory] = useState<String>('total');
+    const [category, switchCategory] = useState<String>('total');
 
     const displayTodos = useMemo(() => {
         switch (category) {
@@ -17,6 +17,14 @@ export const useTodos = (items: TodoType[]) => {
                 return todos;
         }
     }, [category, todos])
+
+    const aggregation = useMemo(() => {
+        return {
+            total: todos.length,
+            completed: todos.filter(todo => todo.completed).length,
+            active: todos.filter(todo => !todo.completed).length
+        }
+    }, [todos])
 
     const addTodo = (todo: TodoType) => {
         setTodos([todo, ...todos]);
@@ -35,5 +43,5 @@ export const useTodos = (items: TodoType[]) => {
         setTodos(todos.filter(item => item.id !== todo.id))
     }
 
-    return { displayTodos, setCategory, addTodo, toggleTodo, deleteTodo }
+    return { displayTodos, aggregation, switchCategory, addTodo, toggleTodo, deleteTodo }
 }

@@ -66,9 +66,9 @@ describe("Todos application", () => {
 
   it("renders a list of items", () => {
     const items = [
-      { id: "1", content: "buy some milk", completed: false },
-      { id: "2", content: "buy some bread", completed: true },
-      { id: "3", content: "buy some eggs", completed: false },
+      { id: "1", content: "buy some milk", completed: false, favorite: false },
+      { id: "2", content: "buy some bread", completed: true, favorite: false },
+      { id: "3", content: "buy some eggs", completed: false, favorite: false },
     ];
 
     render(<Todo items={items} />);
@@ -77,9 +77,9 @@ describe("Todos application", () => {
 
   describe("Aggregation", () => {
     const items = [
-      { id: "1", content: "buy some milk", completed: false },
-      { id: "2", content: "buy some bread", completed: true },
-      { id: "3", content: "buy some eggs", completed: false },
+      { id: "1", content: "buy some milk", completed: false, favorite: false },
+      { id: "2", content: "buy some bread", completed: true, favorite: false },
+      { id: "3", content: "buy some eggs", completed: false, favorite: false },
     ];
 
     it("renders different groups of items", () => {
@@ -113,9 +113,24 @@ describe("Todos application", () => {
 
     it("renders active groups of items", () => {
       const items = [
-        { id: "1", content: "buy some milk", completed: false },
-        { id: "2", content: "buy some bread", completed: true },
-        { id: "3", content: "buy some eggs", completed: false },
+        {
+          id: "1",
+          content: "buy some milk",
+          completed: false,
+          favorite: false,
+        },
+        {
+          id: "2",
+          content: "buy some bread",
+          completed: true,
+          favorite: false,
+        },
+        {
+          id: "3",
+          content: "buy some eggs",
+          completed: false,
+          favorite: false,
+        },
       ];
 
       render(<Todo items={items} />);
@@ -134,9 +149,24 @@ describe("Todos application", () => {
 
     it("show summary information", () => {
       const items = [
-        { id: "1", content: "buy some milk", completed: false },
-        { id: "2", content: "buy some bread", completed: true },
-        { id: "3", content: "buy some eggs", completed: false },
+        {
+          id: "1",
+          content: "buy some milk",
+          completed: false,
+          favorite: false,
+        },
+        {
+          id: "2",
+          content: "buy some bread",
+          completed: true,
+          favorite: false,
+        },
+        {
+          id: "3",
+          content: "buy some eggs",
+          completed: false,
+          favorite: false,
+        },
       ];
 
       render(<Todo items={items} />);
@@ -169,9 +199,24 @@ describe("Todos application", () => {
   describe("Search", () => {
     it("search by keyword", () => {
       const items = [
-        { id: "1", content: "get some milk", completed: false },
-        { id: "2", content: "buy some bread", completed: true },
-        { id: "3", content: "buy some eggs", completed: false },
+        {
+          id: "1",
+          content: "get some milk",
+          completed: false,
+          favorite: false,
+        },
+        {
+          id: "2",
+          content: "buy some bread",
+          completed: true,
+          favorite: false,
+        },
+        {
+          id: "3",
+          content: "buy some eggs",
+          completed: false,
+          favorite: false,
+        },
       ];
 
       render(<Todo items={items} />);
@@ -184,5 +229,30 @@ describe("Todos application", () => {
 
       expect(screen.getAllByTestId("todo-item").length).toEqual(2);
     });
+  });
+
+  it("favourites an item when button clicked", () => {
+    render(<Todo />);
+
+    const input = screen.getByTestId("todo-input");
+
+    act(() => {
+      userEvent.type(input, "buy a new laptop this year");
+      userEvent.type(input, "{enter}");
+    });
+
+    const item = screen.getByText("buy a new laptop this year");
+
+    act(() => {
+      userEvent.click(item);
+    });
+
+    const likeButton = screen.getByTestId("like-button");
+
+    act(() => {
+      userEvent.click(likeButton);
+    });
+
+    expect(item).toHaveAttribute("data-favorited", "true");
   });
 });

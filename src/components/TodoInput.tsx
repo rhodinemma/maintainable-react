@@ -16,7 +16,7 @@ const TodoInput = ({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       const id = uuid();
-      onItemAdded({ id, content, completed: false });
+      onItemAdded({ id, content, completed: false, favorite: false });
     }
   };
 

@@ -28,6 +28,10 @@
     color: #999;
 }
 
+.todo-item span[data-favorited="true"] {
+    background-color: red;
+}
+
 .todo-item button {
     margin-left: auto;
 }

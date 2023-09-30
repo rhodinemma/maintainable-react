@@ -53,6 +53,15 @@ export const useTodos = (items: TodoType[]) => {
         }))
     }
 
+    const likeTodo = (todo: TodoType) => {
+        setTodos(todos.map(item => {
+            if (item.id === todo.id) {
+                return ({ ...item, favorite: !item.favorite })
+            }
+            return item
+        }))
+    }
+
     const deleteTodo = (todo: TodoType) => {
         setTodos(todos.filter(item => item.id !== todo.id))
     }
@@ -61,5 +70,5 @@ export const useTodos = (items: TodoType[]) => {
         setQuery(query);
     }
 
-    return { displayTodos, aggregation, switchCategory, addTodo, toggleTodo, deleteTodo, search }
+    return { displayTodos, aggregation, switchCategory, addTodo, toggleTodo, deleteTodo, search, likeTodo }
 }
